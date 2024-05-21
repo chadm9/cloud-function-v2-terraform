@@ -1,0 +1,4 @@
+google-cloud-secret-manager
+functions-framework==3.*
+flask~=3.0.3
+google~=3.0.0
