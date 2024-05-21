@@ -47,28 +47,6 @@ resource "google_service_account" "vdi_create_fn_svc_acct" {
   display_name = "The service account for the python http function"
 }
 
-resource "google_secret_manager_secret" "frame_key_secret" {
-  project   = var.project_id
-  secret_id = "frame-key"
-
-  replication {
-    user_managed {
-      replicas {
-        location = var.region
-      }
-    }
-  }
-}
-
-resource "google_secret_manager_secret_iam_binding" "binding" {
-  project = var.project_id
-  secret_id = google_secret_manager_secret.frame_key_secret.secret_id
-  role = "roles/secretmanager.secretAccessor"
-  members = [
-    "serviceAccount:${google_service_account.vdi_create_fn_svc_acct.email}",
-  ]
-}
-
 /*
 Create a Cloud Function which is triggered in response to log events
 being published to the log sink destination Pub/Sub topic.
